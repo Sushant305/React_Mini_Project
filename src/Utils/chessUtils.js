@@ -41,3 +41,44 @@ export const initialBoard = [
 
 
 ];
+
+export const getPawnMoves = (board,row,col)=>{
+    const piece = board[row][col]
+
+    if(!piece || piece.type !== "pawn"){
+        return []
+    }
+
+    const direction = piece.color === "white" ? -1 : 1
+    const startingRow = piece.color === "white" ? 6 : 1
+
+    const moves = []    
+    const oneStepRow = row+ direction
+
+    if(board[oneStepRow] && board[oneStepRow][col]=== null){
+        moves.push({
+            row:oneStepRow,col,
+        })
+    }
+
+    const twoStepRow = row + direction *2
+
+    if(row === startingRow && board[oneStepRow]?.[col]=== null && board[twoStepRow]?.[col]=== null){
+        moves.push({
+            row:twoStepRow,col,
+        })
+    }
+
+    const captureColumns = [col-1,col+1]
+
+    captureColumns.forEach((capturecol)=>{
+        const targetPiece = board[oneStepRow]?.[capturecol]
+        if(targetPiece  && targetPiece.color !== piece.color){
+            moves.push({
+                row:oneStepRow,
+                col:capturecol,
+            })
+        }
+    })
+    return moves
+}
