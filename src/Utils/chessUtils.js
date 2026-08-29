@@ -1,13 +1,13 @@
 export const initialBoard = [
     [
-        {type :"rock",color:"black"},
+        {type :"rook",color:"black"},
         {type :"knight",color:"black"},
         {type :"bishop",color:"black"},
         {type :"queen",color:"black"},
         {type :"king",color:"black"},
-        {type :"dishop",color:"black"},
+        {type :"bishop",color:"black"},
         {type :"knight",color:"black"},
-        {type :"rock",color:"black"},
+        {type :"rook",color:"black"},
     ],
 
 
@@ -29,14 +29,14 @@ export const initialBoard = [
     ),
 
     [
-        {type :"rock",color:"white"},
+        {type :"rook",color:"white"},
         {type :"knight",color:"white"},
         {type :"bishop",color:"white"},
         {type :"queen",color:"white"},
         {type :"king",color:"white"},
-        {type :"dishop",color:"white"},
+        {type :"bishop",color:"white"},
         {type :"knight",color:"white"},
-        {type :"rock",color:"white"},
+        {type :"rook",color:"white"},
     ],
 
 

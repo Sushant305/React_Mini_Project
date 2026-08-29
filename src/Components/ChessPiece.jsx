@@ -1,11 +1,36 @@
-import React from 'react'
+import React from "react";
 
-const ChessPiece = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+const pieces = {
+  white: {
+    king: "♔",
+    queen: "♕",
+    rook: "♖",
+    bishop: "♗",
+    knight: "♘",
+    pawn: "♙",
+  },
+  black: {
+    king: "♚",
+    queen: "♛",
+    rook: "♜",
+    bishop: "♝",
+    knight: "♞",
+    pawn: "♟",
+  },
+};
 
-export default ChessPiece
+const ChessPiece = ({piece}) => {
+
+  if(!piece){
+    return null
+  }
+
+  const {type, color} = piece
+
+  return( 
+  <span className="text-4xl md:text-5xl select-none">
+    {pieces [color][type]}
+  </span>);
+};
+
+export default ChessPiece;
