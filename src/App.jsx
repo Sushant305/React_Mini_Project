@@ -1,17 +1,14 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-
+import React from 'react'
 import ChessBoard from './Components/ChessBoard'
+import { ChessProvider } from './Context/ChessContext'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
-    <>
-    <ChessBoard/>
-    </>
+    <ChessProvider>
+      <main className='min-h-screen bg-slate-900 flex items-center justify-center  p-4'>
+        <ChessBoard/>
+      </main>
+    </ChessProvider>
   )
 }
 
