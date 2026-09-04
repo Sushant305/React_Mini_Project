@@ -1,16 +1,8 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-} from "react";
+import React, { createContext, useContext, useState } from "react";
 import {
   initialBoard,
-  getPawnMoves,
-  getKnightMoves,
-  getBishopMoves,
-  getRookMoves,
-  getQueenMoves,
-  getKingMoves
+  isKingInCheck,
+  getLegalMoves,
 } from "../Utils/chessUtils";
 
 const ChessContext = createContext();
@@ -32,7 +24,9 @@ export const ChessProvider = ({ children }) => {
         const newBoard = board.map((currentRow) => [...currentRow]);
         newBoard[row][col] = newBoard[selectedSquare.row][selectedSquare.col];
         newBoard[selectedSquare.row][selectedSquare.col] = null;
+
         setBoard(newBoard);
+
         setSelectedSquare(null);
         setValidMoves([]);
 
@@ -48,30 +42,8 @@ export const ChessProvider = ({ children }) => {
       return;
     }
     setSelectedSquare({ row, col });
-    if (piece.type === "pawn") {
-      const moves = getPawnMoves(board, row, col);
-      setValidMoves(moves);
-    }
-    if (piece.type === "knight") {
-      const moves = getKnightMoves(board, row, col);
-      setValidMoves(moves);
-    }
-    if (piece.type === "bishop") {
-      const moves = getBishopMoves(board, row, col);
-      setValidMoves(moves);
-    }
-    if (piece.type === "rook") {
-      const moves = getRookMoves(board, row, col);
-      setValidMoves(moves);
-    }
-    if (piece.type === "queen") {
-      const moves = getQueenMoves(board, row, col);
-      setValidMoves(moves);
-    }
-    if (piece.type === "king") {
-      const moves = getKingMoves(board, row, col);
-      setValidMoves(moves);
-    }
+    const moves = getLegalMoves(board, row, col);
+    setValidMoves(moves);
   };
 
   return (
@@ -84,6 +56,7 @@ export const ChessProvider = ({ children }) => {
         selectedSquare,
         selectSquare,
         validMoves,
+        isKingInCheck,
       }}
     >
       {children}
