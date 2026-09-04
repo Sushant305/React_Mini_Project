@@ -3,6 +3,7 @@ import {
   initialBoard,
   isKingInCheck,
   getLegalMoves,
+  hasAnyLegalMoves,
 } from "../Utils/chessUtils";
 
 const ChessContext = createContext();
@@ -12,8 +13,12 @@ export const ChessProvider = ({ children }) => {
   const [currentPlayer, setCurrentPlayer] = useState("white");
   const [selectedSquare, setSelectedSquare] = useState(null);
   const [validMoves, setValidMoves] = useState([]);
+  const [gameStatus, setGameStatus] = useState(null);
 
   const selectSquare = (row, col) => {
+    if (gameStatus) {
+      return;
+    }
     const piece = board[row][col];
 
     if (selectedSquare) {
@@ -25,12 +30,22 @@ export const ChessProvider = ({ children }) => {
         newBoard[row][col] = newBoard[selectedSquare.row][selectedSquare.col];
         newBoard[selectedSquare.row][selectedSquare.col] = null;
 
-        setBoard(newBoard);
+        const nextPlayer = currentPlayer === "white" ? "black" : "white";
 
+        if (
+          isKingInCheck(newBoard, nextPlayer) &&
+          !hasAnyLegalMoves(newBoard, nextPlayer)
+        ) {
+          setBoard(newBoard)
+          setSelectedSquare(null);
+          setValidMoves([]);
+          setGameStatus(`CheckMate! ${currentPlayer} WINS `);
+          return;
+        }
+        setBoard(newBoard);
         setSelectedSquare(null);
         setValidMoves([]);
-
-        setCurrentPlayer(currentPlayer === "white" ? "black" : "white");
+        setCurrentPlayer(nextPlayer);
         return;
       }
     }
@@ -57,6 +72,7 @@ export const ChessProvider = ({ children }) => {
         selectSquare,
         validMoves,
         isKingInCheck,
+        gameStatus,
       }}
     >
       {children}

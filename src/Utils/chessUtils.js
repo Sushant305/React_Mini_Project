@@ -312,6 +312,40 @@ export const getKingMoves = (board, row, col) => {
   return moves;
 };
 
+export const getKingAttacks = (board, row, col) => {
+  const piece = board[row][col];
+
+  if (!piece || piece.type !== "king") {
+    return [];
+  }
+
+  const attacks = [];
+
+  const directions = [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+    [-1, -1],
+    [-1, 1],
+    [1, -1],
+    [1, 1],
+  ];
+
+  directions.forEach(([rowDirection, colDirection]) => {
+    const newRow = row + rowDirection;
+    const newCol = col + colDirection;
+
+    if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+      attacks.push({
+        row: newRow,
+        col: newCol,
+      });
+    }
+  });
+  return attacks;
+};
+
 export const isKingInCheck = (board, color) => {
   let kingsPosition = null;
   board.forEach((row, rowIndex) => {
@@ -358,7 +392,7 @@ export const isKingInCheck = (board, color) => {
         moves = getQueenMoves(board, row, col);
       }
       if (piece.type === "king") {
-        moves = getKingMoves(board, row, col);
+        moves = getKingAttacks(board, row, col);
       }
 
       const attackKing = moves.some(
@@ -403,10 +437,33 @@ export const getLegalMoves = (board, row, col) => {
   }
 
   return moves.filter((move) => {
+    const targetPiece = board[move.row][move.col];
+
+    if (targetPiece && targetPiece.type === "king") {
+      return false;
+    }
+
     const newBoard = board.map((currentRow) => [...currentRow]);
     newBoard[move.row][move.col] = newBoard[row][col];
 
     newBoard[row][col] = null;
     return !isKingInCheck(newBoard, piece.color);
   });
+};
+
+export const hasAnyLegalMoves = (board, color) => {
+  for (let row = 0; row < 8; row++) {
+    for (let col = 0; col < 8; col++) {
+      const piece = board[row][col];
+      if (!piece || piece.color !== color) {
+        continue;
+      }
+      const legalMoves = getLegalMoves(board, row, col);
+
+      if (legalMoves.length > 0) {
+        return true;
+      }
+    }
+  }
+  return false;
 };
