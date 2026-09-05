@@ -14,6 +14,7 @@ export const ChessProvider = ({ children }) => {
   const [selectedSquare, setSelectedSquare] = useState(null);
   const [validMoves, setValidMoves] = useState([]);
   const [gameStatus, setGameStatus] = useState(null);
+  const [checkStatus , setCheckStatus] = useState(null)
 
   const selectSquare = (row, col) => {
     if (gameStatus) {
@@ -42,6 +43,14 @@ export const ChessProvider = ({ children }) => {
           setGameStatus(`CheckMate! ${currentPlayer} WINS `);
           return;
         }
+
+        if (isKingInCheck(newBoard,nextPlayer)) {
+          setCheckStatus(`${nextPlayer} IS IN Check!`)
+        }else{
+          setCheckStatus(null)
+        }
+
+        
         setBoard(newBoard);
         setSelectedSquare(null);
         setValidMoves([]);
@@ -73,6 +82,7 @@ export const ChessProvider = ({ children }) => {
         validMoves,
         isKingInCheck,
         gameStatus,
+        checkStatus,
       }}
     >
       {children}

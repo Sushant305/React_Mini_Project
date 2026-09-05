@@ -3,15 +3,20 @@ import ChessPiece from "./ChessPiece";
 import { useChess } from "../Context/ChessContext";
 
 const ChessSquare = ({ piece, row, col }) => {
-  const { selectedSquare, selectSquare ,validMoves } = useChess();
+  const { selectedSquare, selectSquare, validMoves, checkStatus } = useChess();
 
   const isLight = (row + col) % 2 === 0;
 
-  const isSelected =
-  selectedSquare?.row === row &&
-  selectedSquare?.col === col;
+  const isSelected = selectedSquare?.row === row && selectedSquare?.col === col;
 
-  const isValidMove = validMoves.some((move)=>move.row === row && move.col === col)
+  const isValidMove = validMoves.some(
+    (move) => move.row === row && move.col === col,
+  );
+
+  const isKingInCheck =
+    checkStatus &&
+    piece?.type === "king" &&
+    piece?.color === checkStatus.split(" ")[0];
 
   const handleClick = () => {
     selectSquare(row, col);
@@ -29,6 +34,7 @@ const ChessSquare = ({ piece, row, col }) => {
                 ${isLight ? "bg-[#f0d9b5]" : "bg-[#b58863]"}
                 ${isSelected ? "ring-4 ring-yellow-400 ring-inset" : ""}
                 ${isValidMove ? "ring-4 ring-purple-400 ring-inset" : ""}
+                ${isKingInCheck ?"ring-4 ring-red-700 ring-inset":""}
             `}
     >
       <ChessPiece piece={piece} />
