@@ -33,7 +33,7 @@ const ChessSquare = ({ piece, row, col }) => {
                 cursor-pointer
                 ${isLight ? "bg-[#f0d9b5]" : "bg-[#b58863]"}
                 ${isSelected ? "ring-4 ring-yellow-400 ring-inset" : ""}
-                ${isValidMove ? "ring-4 ring-purple-400 ring-inset" : ""}
+                ${isValidMove ? "ring-4 ring-cyan-300 ring-inset" : ""}
                 ${isKingInCheck ?"ring-4 ring-red-700 ring-inset":""}
             `}
     >
